@@ -1,3 +1,5 @@
+import java.util.Date;
+
 public class Account {
     private int id;
     private double balance;
@@ -15,14 +17,14 @@ public class Account {
         return balance;
     }
 
-    public void setBalance(long timeStamp, int clientId, double update , Logger logger) {
+    public void setBalance( int clientId, double update , Logger logger) {
         this.balance = balance + update;
         if(update>0) {
-            Log log = new Log(timeStamp, clientId, "client balance updated – deposit", update);
+            Log log = new Log(new Date().toString(), clientId, "client balance updated – deposit", update);
             logger.log(log);
         }
         else if(update < 0){
-            Log log = new Log(timeStamp, clientId, "client balance updated – withdraw", update);
+            Log log = new Log(new Date().toString(), clientId, "client balance updated – withdraw", update);
             logger.log(log);
         }
     }
