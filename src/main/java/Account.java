@@ -17,15 +17,15 @@ public class Account {
         return balance;
     }
 
-    public void setBalance( int clientId, double update , Logger logger) {
+    public void setBalance( int clientId, double update ) {
         this.balance = balance + update;
         if(update>0) {
             Log log = new Log(new Date().toString(), clientId, "client balance updated – deposit", update);
-            logger.log(log);
+            Logger.log(log);
         }
         else if(update < 0){
             Log log = new Log(new Date().toString(), clientId, "client balance updated – withdraw", update);
-            logger.log(log);
+            Logger.log(log);
         }
     }
 

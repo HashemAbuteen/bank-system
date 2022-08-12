@@ -80,7 +80,7 @@ public abstract class Client {
         balance -= commission;
         Bank.updateTotalCommission(commission);
         Log log  = new Log(new Date().toString() , this.id , "client balance update - deposit" , amount - commission );
-        logger.log(log);
+        Logger.log(log);
     }
 
     public void withdraw(double amount){
@@ -89,7 +89,7 @@ public abstract class Client {
         balance -= commission;
         Bank.updateTotalCommission(commission);
         Log log  = new Log(new Date().toString() , this.id , "client balance update - withdraw" , amount + commission );
-        logger.log(log);
+        Logger.log(log);
     }
 
     public void autoUpdateAccounts(){
@@ -97,9 +97,9 @@ public abstract class Client {
             if(accounts[i]!=null){
                 Account account = accounts[i];
                 double amount = account.getBalance()* interestRate;
-                account.setBalance(this.id , amount, logger );
+                account.setBalance(this.id , amount );
                 Log log  = new Log(new Date().toString() , this.id , "bank auto account interest update" , amount );
-                logger.log(log);
+                Logger.log(log);
             }
         }
 
