@@ -105,7 +105,7 @@ public class Client {
             if(accounts[i]!=null){
                 Account account = accounts[i];
                 double amount = account.getBalance()*intrestRate;
-                account.setBalance(this.id , amount, logger );
+                account.setBalance(this.id , amount );
                 Log log  = new Log(new Date().toString() , this.id , "bank auto account interest update" , amount );
                 logger.log(log);
             }
