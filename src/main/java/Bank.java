@@ -3,10 +3,21 @@ import java.util.Date;
 public class Bank {
     private Client [] clients;
     private Logger logService ;
+    private static Bank bank = null;
+    private static float totalCommission ;
     /*TODO:  Account updated */
 
-    public Bank() {
+
+    private Bank() {
         clients = new Client[100];
+    }
+
+    public static Bank getBank(){
+        if(bank == null){
+            bank = new Bank();
+        }
+        return bank;
+
     }
 
     public float getBalance(){
@@ -43,6 +54,10 @@ public class Bank {
 
     public void startAccountUpdater(){
         /*TODO : LATER */
+    }
+
+    public static void updateTotalCommission(double updatedCommission){
+        totalCommission += updatedCommission;
     }
 
 }

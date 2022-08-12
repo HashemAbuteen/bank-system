@@ -1,13 +1,15 @@
+import java.util.Arrays;
 import java.util.Date;
+import java.util.Objects;
 
-public abstract class Client {
+public class Client {
     final private String driverName = "";
     private int id;
     private String name;
     private double balance;
     private Account[] accounts = new Account[5];
-    final protected double commissionRate = 0;
-    final protected double interestRate = 0;
+    private double commissionRate = 0;
+    private double intrestRate = 0;
     private Logger logger = new Logger(driverName);
 
     public Client(int id, String name, double balance) {
@@ -61,9 +63,9 @@ public abstract class Client {
         return null;
     }
 
-    public void removeAccount(Account account){
+    public void removeAccount(int id){
         for(Account acc : accounts){
-            if(acc != null && acc.equals(account)) {
+            if(acc != null && acc.getId() == id) {
                 acc = null;
                 balance += acc.getBalance();
                 Log log = new Log(new Date().toString(), this.id, "account update - closed", acc.getBalance());
@@ -76,30 +78,28 @@ public abstract class Client {
 
     public void deposit(double amount){
         balance += amount;
-        double commission = amount*commissionRate;
-        balance -= commission;
-        Bank.updateTotalCommission(commission);
-        Log log  = new Log(new Date().toString() , this.id , "client balance update - deposit" , amount - commission );
-        Logger.log(log);
+        balance -= commissionRate;
+        Bank.updateTotalCommission(commissionRate);
+        Log log  = new Log(new Date().toString() , this.id , "client balance update - deposit" , amount - commissionRate );
+        logger.log(log);
     }
 
     public void withdraw(double amount){
         balance -= amount;
-        double commission = amount*commissionRate;
-        balance -= commission;
-        Bank.updateTotalCommission(commission);
-        Log log  = new Log(new Date().toString() , this.id , "client balance update - withdraw" , amount + commission );
-        Logger.log(log);
+        balance -= commissionRate;
+        Bank.updateTotalCommission(commissionRate);
+        Log log  = new Log(new Date().toString() , this.id , "client balance update - withdraw" , amount + commissionRate );
+        logger.log(log);
     }
 
     public void autoUpdateAccounts(){
         for(int i = 0 ; i < accounts.length ; i++){
             if(accounts[i]!=null){
                 Account account = accounts[i];
-                double amount = account.getBalance()* interestRate;
-                account.setBalance(this.id , amount );
+                double amount = account.getBalance()*intrestRate;
+                account.setBalance(this.id , amount, logger );
                 Log log  = new Log(new Date().toString() , this.id , "bank auto account interest update" , amount );
-                Logger.log(log);
+                logger.log(log);
             }
         }
 
@@ -116,7 +116,17 @@ public abstract class Client {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        return this.id == ((Client)obj).getId();
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Client)) return false;
+        Client client = (Client) o;
+        return getId() == client.getId() &&
+                Double.compare(client.getBalance(), getBalance()) == 0 &&
+                Double.compare(client.commissionRate, commissionRate) == 0 &&
+                Double.compare(client.intrestRate, intrestRate) == 0 &&
+                Objects.equals(driverName, client.driverName) &&
+                Objects.equals(getName(), client.getName()) &&
+                Arrays.equals(getAccounts(), client.getAccounts()) &&
+                Objects.equals(logger, client.logger);
     }
 }
