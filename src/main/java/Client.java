@@ -40,31 +40,38 @@ public class Client {
         this.balance = balance;
     }
 
+    /** no log -- should break after adding -- does the index == clientId ?? **/
     public void addAccount(Account account){
-        for(int i = 0 ; i < accounts.length ; i++){
-            if(accounts[i] == null ){
-                accounts[i] = account;
+        for(Account acc : accounts){
+            if(acc == null){
+                acc = account;
+                Logger.log( new Log(new Date().toString() , this.id , "account added" , account.getBalance()));
+                break;
             }
         }
     }
 
     public Account getAccount(int id){
-        if(id<accounts.length){
-            return accounts[id];
+        for(Account acc : accounts){
+            if(acc != null && acc.getId() == id){
+                return acc;
+            }
+
         }
-        else {
-            return null;
-        }
+        return null;
     }
 
     public void removeAccount(int id){
-        if(accounts[id] != null){
-            Account account = accounts[id];
-            balance += account.getBalance();
-            Log log  = new Log(new Date().toString() , this.id , "account update - closed" , account.getBalance() );
-            accounts[id] = null;
-            logger.log(log);
+        for(Account acc : accounts){
+            if(acc != null && acc.getId() == id) {
+                acc = null;
+                balance += acc.getBalance();
+                Log log = new Log(new Date().toString(), this.id, "account update - closed", acc.getBalance());
+                Logger.log(log);
+                break;
+            }
         }
+
     }
 
     public void deposit(double amount){
