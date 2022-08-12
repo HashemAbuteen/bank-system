@@ -11,8 +11,8 @@ public class Log {
         this.description = description;
         this.amount = amount;
     }
-
-    public String getData(){
+    @Override
+    public String toString(){
         return timestamp + " , client-" +clientId + " , " + description + " , " + amount ;
     }
 

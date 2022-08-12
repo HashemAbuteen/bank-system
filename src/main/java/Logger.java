@@ -11,7 +11,7 @@ public class Logger {
     * accepts a Log object and stores it in the Log DB
     */
     public static void log(Log log){
-        System.out.println(log.getData());
+        System.out.println(log.toString());
     }
 
     /*
