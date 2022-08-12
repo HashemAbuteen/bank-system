@@ -1,13 +1,13 @@
 import java.util.Date;
 
-public class Client {
+public abstract class Client {
     final private String driverName = "";
     private int id;
     private String name;
     private double balance;
     private Account[] accounts = new Account[5];
-    private double commissionRate = 0;
-    private double intrestRate = 0;
+    final protected double commissionRate = 0;
+    final protected double interestRate = 0;
     private Logger logger = new Logger(driverName);
 
     public Client(int id, String name, double balance) {
@@ -76,15 +76,19 @@ public class Client {
 
     public void deposit(double amount){
         balance += amount;
-        balance -= commissionRate;
-        Log log  = new Log(new Date().toString() , this.id , "client balance update - deposit" , amount - commissionRate );
+        double commission = amount*commissionRate;
+        balance -= commission;
+        Bank.updateTotalCommission(commission);
+        Log log  = new Log(new Date().toString() , this.id , "client balance update - deposit" , amount - commission );
         logger.log(log);
     }
 
     public void withdraw(double amount){
         balance -= amount;
-        balance -= commissionRate;
-        Log log  = new Log(new Date().toString() , this.id , "client balance update - withdraw" , amount + commissionRate );
+        double commission = amount*commissionRate;
+        balance -= commission;
+        Bank.updateTotalCommission(commission);
+        Log log  = new Log(new Date().toString() , this.id , "client balance update - withdraw" , amount + commission );
         logger.log(log);
     }
 
@@ -92,7 +96,7 @@ public class Client {
         for(int i = 0 ; i < accounts.length ; i++){
             if(accounts[i]!=null){
                 Account account = accounts[i];
-                double amount = account.getBalance()*intrestRate;
+                double amount = account.getBalance()* interestRate;
                 account.setBalance(this.id , amount, logger );
                 Log log  = new Log(new Date().toString() , this.id , "bank auto account interest update" , amount );
                 logger.log(log);
@@ -111,5 +115,8 @@ public class Client {
         return fortune;
     }
 
-
+    @Override
+    public boolean equals(Object obj) {
+        return this.id == ((Client)obj).getId();
+    }
 }
