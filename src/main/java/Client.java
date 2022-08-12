@@ -61,9 +61,9 @@ public abstract class Client {
         return null;
     }
 
-    public void removeAccount(int id){
+    public void removeAccount(Account account){
         for(Account acc : accounts){
-            if(acc != null && acc.getId() == id) {
+            if(acc != null && acc.equals(account)) {
                 acc = null;
                 balance += acc.getBalance();
                 Log log = new Log(new Date().toString(), this.id, "account update - closed", acc.getBalance());
