@@ -18,6 +18,14 @@ public class Client {
         this.balance = balance;
     }
 
+    public Client(int id, String name, double balance, double commissionRate, double intrestRate) {
+        this.id = id;
+        this.name = name;
+        this.balance = balance;
+        this.commissionRate = commissionRate;
+        this.intrestRate = intrestRate;
+    }
+
     public int getId() {
         return id;
     }
