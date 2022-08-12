@@ -28,4 +28,9 @@ public class Account {
             logger.log(log);
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return this.id == ((Account)obj).getId();
+    }
 }
